@@ -56,7 +56,7 @@ function App() {
       )}
 
       {isModalOpen && (
-        <div className="modal" onClick={closeModal}>
+        <div className="modal-overlay" onClick={closeModal}>
           <div
             className="modal-content"
             onClick={(e) => e.stopPropagation()} // prevent closing when clicking inside form
@@ -114,7 +114,7 @@ function App() {
         </div>
       )}
 
-     
+      {/* ✅ Inline CSS */}
       <style>{`
         body {
           font-family: Arial, sans-serif;
@@ -142,16 +142,17 @@ function App() {
           background-color: #0056b3;
         }
 
-        .modal {
+        .modal-overlay {
           position: fixed;
           top: 0;
           left: 0;
-          width: 100%;
-          height: 100%;
+          width: 100vw;
+          height: 100vh;
           background-color: rgba(0, 0, 0, 0.4);
           display: flex;
           justify-content: center;
           align-items: center;
+          z-index: 1000;
         }
 
         .modal-content {
@@ -161,6 +162,7 @@ function App() {
           box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
           text-align: left;
           width: 300px;
+          position: relative;
         }
 
         form div {
