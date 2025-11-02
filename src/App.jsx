@@ -20,19 +20,16 @@ function App() {
     e.preventDefault();
     const { username, email, phone, dob } = formData;
 
-    // ✅ Email validation
     if (!/\S+@\S+\.\S+/.test(email)) {
       alert("Invalid email");
       return;
     }
 
-    // ✅ Phone validation
     if (!/^\d{10}$/.test(phone)) {
       alert("Invalid phone number");
       return;
     }
 
-    // ✅ DOB validation
     const today = new Date();
     const dobDate = new Date(dob);
     if (dobDate > today) {
@@ -42,7 +39,6 @@ function App() {
 
     console.log("Form submitted successfully:", formData);
 
-    // ✅ Close modal and reset form
     setIsModalOpen(false);
     setFormData({ username: "", email: "", phone: "", dob: "" });
   };
@@ -50,16 +46,16 @@ function App() {
   return (
     <div className="App">
       {!isModalOpen && (
-        <button onClick={openModal} className="open-button">
+        <button className="open-button" onClick={openModal}>
           Open Form
         </button>
       )}
 
       {isModalOpen && (
-        <div className="modal-overlay" onClick={closeModal}>
+        <div className="modal" onClick={closeModal}>
           <div
             className="modal-content"
-            onClick={(e) => e.stopPropagation()} // prevent closing when clicking inside form
+            onClick={(e) => e.stopPropagation()} // Prevent closing on inner click
           >
             <form onSubmit={handleSubmit}>
               <div>
@@ -114,7 +110,6 @@ function App() {
         </div>
       )}
 
-      {/* ✅ Inline CSS */}
       <style>{`
         body {
           font-family: Arial, sans-serif;
@@ -142,10 +137,9 @@ function App() {
           background-color: #0056b3;
         }
 
-        .modal-overlay {
+        .modal {
           position: fixed;
-          top: 0;
-          left: 0;
+          inset: 0;
           width: 100vw;
           height: 100vh;
           background-color: rgba(0, 0, 0, 0.4);
