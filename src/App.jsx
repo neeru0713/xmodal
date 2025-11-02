@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
 function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -10,19 +10,7 @@ function App() {
   });
 
   const openModal = () => setIsModalOpen(true);
-
-  // ✅ Updated outside click handler (to pass all tests)
-  const handleOutsideClick = (e) => {
-    const modalContent = document.querySelector(".modal-content");
-    if (isModalOpen && modalContent && !modalContent.contains(e.target)) {
-      setIsModalOpen(false);
-    }
-  };
-
-  useEffect(() => {
-    window.addEventListener("click", handleOutsideClick);
-    return () => window.removeEventListener("click", handleOutsideClick);
-  }, [isModalOpen]);
+  const closeModal = () => setIsModalOpen(false);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
@@ -32,16 +20,19 @@ function App() {
     e.preventDefault();
     const { username, email, phone, dob } = formData;
 
+    // ✅ Email validation
     if (!/\S+@\S+\.\S+/.test(email)) {
       alert("Invalid email");
       return;
     }
 
+    // ✅ Phone validation
     if (!/^\d{10}$/.test(phone)) {
       alert("Invalid phone number");
       return;
     }
 
+    // ✅ DOB validation
     const today = new Date();
     const dobDate = new Date(dob);
     if (dobDate > today) {
@@ -50,6 +41,8 @@ function App() {
     }
 
     console.log("Form submitted successfully:", formData);
+
+    // ✅ Close modal and reset form
     setIsModalOpen(false);
     setFormData({ username: "", email: "", phone: "", dob: "" });
   };
@@ -63,8 +56,11 @@ function App() {
       )}
 
       {isModalOpen && (
-        <div className="modal">
-          <div className="modal-content">
+        <div className="modal" onClick={closeModal}>
+          <div
+            className="modal-content"
+            onClick={(e) => e.stopPropagation()} // prevent closing when clicking inside form
+          >
             <form onSubmit={handleSubmit}>
               <div>
                 <label htmlFor="username">Username:</label>
@@ -118,7 +114,7 @@ function App() {
         </div>
       )}
 
-      {/* Inline CSS */}
+      {/* ✅ Inline CSS */}
       <style>{`
         body {
           font-family: Arial, sans-serif;
