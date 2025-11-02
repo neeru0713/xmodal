@@ -9,12 +9,12 @@ function App() {
     dob: "",
   });
 
-  // open modal
   const openModal = () => setIsModalOpen(true);
 
-  // close modal on outside click
+  // ✅ Updated outside click handler (to pass all tests)
   const handleOutsideClick = (e) => {
-    if (e.target.classList.contains("modal")) {
+    const modalContent = document.querySelector(".modal-content");
+    if (isModalOpen && modalContent && !modalContent.contains(e.target)) {
       setIsModalOpen(false);
     }
   };
@@ -22,31 +22,26 @@ function App() {
   useEffect(() => {
     window.addEventListener("click", handleOutsideClick);
     return () => window.removeEventListener("click", handleOutsideClick);
-  }, []);
+  }, [isModalOpen]);
 
-  // handle input changes
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
   };
 
-  // validation and submission
   const handleSubmit = (e) => {
     e.preventDefault();
     const { username, email, phone, dob } = formData;
 
-    // email validation
     if (!/\S+@\S+\.\S+/.test(email)) {
       alert("Invalid email");
       return;
     }
 
-    // phone validation (exactly 10 digits)
     if (!/^\d{10}$/.test(phone)) {
       alert("Invalid phone number");
       return;
     }
 
-    // date of birth validation (not in future)
     const today = new Date();
     const dobDate = new Date(dob);
     if (dobDate > today) {
@@ -54,7 +49,6 @@ function App() {
       return;
     }
 
-    // all valid, submit form
     console.log("Form submitted successfully:", formData);
     setIsModalOpen(false);
     setFormData({ username: "", email: "", phone: "", dob: "" });
