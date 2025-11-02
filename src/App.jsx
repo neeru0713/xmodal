@@ -10,13 +10,11 @@ function App() {
   });
 
   // open modal
-  const openModal = () => {
-    setIsModalOpen(true);
-  };
+  const openModal = () => setIsModalOpen(true);
 
   // close modal on outside click
   const handleOutsideClick = (e) => {
-    if (e.target.className === "modal") {
+    if (e.target.classList.contains("modal")) {
       setIsModalOpen(false);
     }
   };
@@ -26,52 +24,38 @@ function App() {
     return () => window.removeEventListener("click", handleOutsideClick);
   }, []);
 
-  // handle input change
+  // handle input changes
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
   };
 
-  // handle form submit and validation
+  // validation and submission
   const handleSubmit = (e) => {
     e.preventDefault();
-
     const { username, email, phone, dob } = formData;
 
-    if (!username) {
-      alert("Please fill out the Username field.");
-      return;
-    }
-    if (!email) {
-      alert("Please fill out the Email field.");
-      return;
-    }
-    if (!phone) {
-      alert("Please fill out the Phone Number field.");
-      return;
-    }
-    if (!dob) {
-      alert("Please fill out the Date of Birth field.");
+    // email validation
+    if (!/\S+@\S+\.\S+/.test(email)) {
+      alert("Invalid email");
       return;
     }
 
-    if (!email.includes("@")) {
-      alert("Invalid email. Please check your email address.");
+    // phone validation (exactly 10 digits)
+    if (!/^\d{10}$/.test(phone)) {
+      alert("Invalid phone number");
       return;
     }
 
-    if (phone.length !== 10 || isNaN(phone)) {
-      alert("Invalid phone number. Please enter a 10-digit phone number.");
-      return;
-    }
-
+    // date of birth validation (not in future)
     const today = new Date();
-    const selectedDate = new Date(dob);
-    if (selectedDate > today) {
-      alert("Invalid date of birth. Date cannot be in the future.");
+    const dobDate = new Date(dob);
+    if (dobDate > today) {
+      alert("Invalid date of birth");
       return;
     }
 
-    // reset and close modal
+    // all valid, submit form
+    console.log("Form submitted successfully:", formData);
     setIsModalOpen(false);
     setFormData({ username: "", email: "", phone: "", dob: "" });
   };
@@ -95,16 +79,18 @@ function App() {
                   id="username"
                   value={formData.username}
                   onChange={handleChange}
+                  required
                 />
               </div>
 
               <div>
                 <label htmlFor="email">Email:</label>
                 <input
-                  type="email"
+                  type="text"
                   id="email"
                   value={formData.email}
                   onChange={handleChange}
+                  required
                 />
               </div>
 
@@ -115,6 +101,7 @@ function App() {
                   id="phone"
                   value={formData.phone}
                   onChange={handleChange}
+                  required
                 />
               </div>
 
@@ -125,6 +112,7 @@ function App() {
                   id="dob"
                   value={formData.dob}
                   onChange={handleChange}
+                  required
                 />
               </div>
 
@@ -136,7 +124,7 @@ function App() {
         </div>
       )}
 
-      {/* Inline CSS using style tag */}
+      {/* Inline CSS */}
       <style>{`
         body {
           font-family: Arial, sans-serif;
