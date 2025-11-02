@@ -114,7 +114,7 @@ function App() {
         </div>
       )}
 
-      {/* ✅ Inline CSS */}
+     
       <style>{`
         body {
           font-family: Arial, sans-serif;
