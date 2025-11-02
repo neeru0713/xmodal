@@ -137,17 +137,18 @@ function App() {
           background-color: #0056b3;
         }
 
-        .modal {
-          position: fixed;
-          inset: 0;
-          width: 100vw;
-          height: 100vh;
-          background-color: rgba(0, 0, 0, 0.4);
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          z-index: 1000;
-        }
+       .modal {
+  position: fixed;
+  inset: 0; /* ensures full-screen coverage */
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
 
         .modal-content {
           background-color: white;
